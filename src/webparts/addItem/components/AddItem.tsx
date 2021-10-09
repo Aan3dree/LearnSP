@@ -17,6 +17,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from '@material-ui/core';
+import Form from "./Form/Form";
 
 const useStyles = makeStyles({
   table: {
@@ -46,40 +47,28 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
     super(props);
     this.state = {
       listItems: []
-    }
+    };
   }
-  async componentDidMount(){
-    const items: any[] = await sp.web.lists.getByTitle("Colaboradores").items.get();
+  public async componentDidMount(){
+    const items: any[] = await sp.web.lists.getByTitle("Colaboradores").items.top(3).get();
     console.log(items);
 
     this.setState({
       listItems: items
-    })
+    });
 
   }
 
-  renderTable(value){
-    return (
-      <th>
-        <td>{value.Title}</td>
-        <td>{value.Cargo}</td>
-      </th>
-    )
-  }
-
-  renderMatTable(value){
-    return (
-      <th>
-        <td>{value.Title}</td>
-        <td>{value.Cargo}</td>
-      </th>
-    )
-  }
 
   public render(): React.ReactElement<IAddItemProps> {
     return (
       <div className={ styles.addItem }>
         <div className={ styles.container }>
+          <div>
+            <h2>
+              Novo Colaborador
+            </h2>
+          </div>
         <TableContainer component={Paper}>
             <Table className={styles.table} aria-label="simple table">
               <TableHead>
@@ -110,6 +99,9 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
               </TableBody>
             </Table>
           </TableContainer>
+          <div>
+            <Form />
+          </div>
         </div>
       </div>
     );
