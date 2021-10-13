@@ -18,22 +18,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from '@material-ui/core';
 import Form from "./Form/Form";
+import Formbts from "./Formbts/Formbts";
+import "bootstrap/dist/css/bootstrap.min.css"
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
-  return { name, calories, fat, carbs, protein };
-}
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 export interface IColaboradores{
   listItems: any;
@@ -50,9 +37,9 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
     };
   }
   public async componentDidMount(){
-    const items: any[] = await sp.web.lists.getByTitle("Colaboradores").items.top(3).get();
+    const items: any[] = await sp.web.lists.getById(this.props.lists).items.top(3).get();
     console.log(items);
-
+    console.log(this.props.lists);
     this.setState({
       listItems: items
     });
@@ -64,11 +51,7 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
     return (
       <div className={ styles.addItem }>
         <div className={ styles.container }>
-          <div>
-            <h2>
-              Novo Colaborador
-            </h2>
-          </div>
+
         <TableContainer component={Paper}>
             <Table className={styles.table} aria-label="simple table">
               <TableHead>
@@ -99,6 +82,11 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
               </TableBody>
             </Table>
           </TableContainer>
+          <div>
+            {/*
+              <Formbts />
+            */}
+          </div>
           <div>
             <Form />
           </div>
