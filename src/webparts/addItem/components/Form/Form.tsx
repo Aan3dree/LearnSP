@@ -20,11 +20,16 @@ type Inputs = {
   Departamento: string,
   Cargo: string,
   Nascimento: Date
-}
+};
 
-export default function Form(){
+export interface IFormProps {
+  handleSave(): void;
+};
+
+export default function Form(props: IFormProps){
+
   const [alert, setAlert] = React.useState(false);
-  const [alertContent, setAlertContent] = React.useState('');
+
   const { register, handleSubmit, watch, errors, control, reset } = useForm<Inputs>();
 
   console.log(watch());
@@ -36,6 +41,8 @@ export default function Form(){
       console.log("Item adicionado a lista");
       console.log(res);
       setAlert(true);
+      reset();
+      props.handleSave();
     })
     .catch((err) => {
       console.log(err);
@@ -44,7 +51,6 @@ export default function Form(){
 
   function resetAlert(){
     setAlert(false);
-    reset;
   }
 
   const registerOptions = {
@@ -73,7 +79,7 @@ export default function Form(){
                 label="Nome"
                 name="Title"
                 fullWidth
-                ref={register}
+                ref={register({ pattern: /^[A-Za-z]+$/i })}
               />
 
             }
@@ -116,7 +122,7 @@ export default function Form(){
                 className={styles.formItem}
                 placeholder="Departamento"
                 name="Departamento"
-                ref={register}/>
+                ref={register({ pattern: /^[A-Za-z]+$/i })}/>
             }
             rules={registerOptions.Departamento}
           />
@@ -134,7 +140,7 @@ export default function Form(){
                 className={styles.formItem}
                 placeholder="Cargo"
                 name="Cargo"
-                ref={register}/>
+                ref={register({ pattern: /^[A-Za-z]+$/i })}/>
             }
             rules={registerOptions.Cargo}
           />
@@ -197,16 +203,6 @@ export default function Form(){
             type="submit"
           >
             Adicionar
-          </Button>
-        </div>
-        <div className={styles.formRow}>
-          <Button
-            variant="contained"
-            color="warn"
-            //onClick={onSubmit}
-            onClick={reset}
-          >
-            Reset
           </Button>
         </div>
       </form>

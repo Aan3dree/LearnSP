@@ -37,7 +37,12 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
     };
   }
   public async componentDidMount(){
-    const items: any[] = await sp.web.lists.getById(this.props.lists).items.top(3).get();
+    this.loadList();
+  }
+
+  public async loadList(){
+
+    const items: any[] = await sp.web.lists.getById(this.props.lists).items.getAll();
     console.log(items);
     console.log(this.props.lists);
     this.setState({
@@ -46,6 +51,9 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
 
   }
 
+  public async componentDidUpdate(){
+    console.log(this.state.listItems.length)
+  }
 
   public render(): React.ReactElement<IAddItemProps> {
     return (
@@ -88,7 +96,9 @@ export default class AddItem extends React.Component<IAddItemProps, IColaborador
             */}
           </div>
           <div>
-            <Form />
+            <Form handleSave={() => {
+              this.loadList();
+            }}/>
           </div>
         </div>
       </div>
